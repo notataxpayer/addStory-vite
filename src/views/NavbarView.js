@@ -13,7 +13,7 @@ export default {
       `;
       parentElement.prepend(navbar);
   
-      // Logout: Hapus token & redirect ke login
+      // Logout: Hapus user token & redirect ke login
       document.getElementById('logout-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         authModel.removeToken();

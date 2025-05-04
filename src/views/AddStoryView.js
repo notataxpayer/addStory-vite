@@ -1,5 +1,5 @@
 import addStoryPresenter from '../presenters/AddStoryPresenter.js';
-import cameraPresenter from '../presenters/cameraPresenter.js';
+import cameraPresenter from '../presenters/CameraPresenter.js';
 
 export default {
   cameraStream: null, // Store camera stream instance
@@ -52,7 +52,7 @@ export default {
     const photoPreview = document.getElementById('photo-preview');
     const photoDataInput = document.getElementById('photo-data');
 
-    // Open camera button handler
+    // Open camera handler
     openCameraBtn.addEventListener('click', async () => {
       try {
         openCameraBtn.disabled = true;
@@ -77,22 +77,22 @@ export default {
     captureBtn.addEventListener('click', () => {
       const photoData = cameraPresenter.capturePhoto(video);
       
-      // Display the captured photo
+      // Display photonya
       photoPreview.src = photoData;
       photoPreview.style.display = 'block';
       photoDataInput.value = photoData;
       
-      // Hide camera and stop stream
+      // Close cam n end stream
       video.style.display = 'none';
       captureBtn.style.display = 'none';
       this.cleanupCamera();
       
-      // Reset camera button
+      // Reset cam
       document.getElementById('open-camera').textContent = 'Retake Photo';
       document.getElementById('open-camera').disabled = false;
     });
 
-    // Upload file button handler
+    // Upload file handler
     uploadPhotoBtn.addEventListener('click', () => {
       fileInput.click();
     });
@@ -123,7 +123,6 @@ export default {
   },
 
   initMap() {
-    // Add slight delay to ensure map container exists
     setTimeout(() => {
       const mapContainer = document.getElementById('map');
       if (!mapContainer) {
@@ -131,7 +130,7 @@ export default {
         return;
       }
 
-      const map = L.map('map').setView([-6.1754, 106.8272], 13); // Default to Jakarta
+      const map = L.map('map').setView([-6.1754, 106.8272], 13); // Set defaultnya ke JKT
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
       }).addTo(map);
@@ -165,7 +164,7 @@ export default {
 
         let photoFile;
         if (photoData) {
-          // Convert base64 to file object
+          // Convert base64 ke file obj
           const blob = await fetch(photoData).then(r => r.blob());
           photoFile = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
         } else {

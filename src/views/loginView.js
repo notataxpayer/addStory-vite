@@ -1,30 +1,3 @@
-// import loginPresenter from '../presenters/loginPresenter.js';
-
-// export default {
-//   render(container) {
-//     container.innerHTML = `
-//       <section>
-//         <h2>Login</h2>
-//         <form id="login-form">
-//           <label for="email">Email</label>
-//           <input id="email" type="email" required>
-//           <label for="password">Password</label>
-//           <input id="password" type="password" required>
-//           <button type="submit">Login</button>
-//         </form>
-//       </section>
-//     `;
-    
-//     document.getElementById('login-form').addEventListener('submit', (e) => {
-//       e.preventDefault();
-//       const email = document.getElementById('email').value;
-//       const password = document.getElementById('password').value;
-//       loginPresenter.login(email, password);
-//     });
-//   }
-  
-// };
-
 import loginPresenter from '../presenters/loginPresenter.js';
 
 export default {

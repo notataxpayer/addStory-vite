@@ -1,4 +1,6 @@
 export default {
+  
+  // Handling
     validatePhoto(file) {
       if (!file.type.startsWith('image/')) {
         throw new Error('File must be an image');

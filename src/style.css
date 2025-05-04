@@ -1,4 +1,4 @@
-/* Reset dasar */
+
 * {
   box-sizing: border-box;
 }
@@ -7,13 +7,13 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #e0f2fe; /* biru muda */
+  background-color: #e0f2fe; 
   color: #333;
   line-height: 1.6;
 }
 
 header {
-  background-color: #38bdf8; /* biru langit */
+  background-color: #69abf7;
   color: #fff;
   padding: 1rem;
   text-align: center;
@@ -22,7 +22,7 @@ header {
 main {
   max-width: 600px;
   margin: 2rem auto;
-  background: #f0f9ff; /* biru muda lebih soft */
+  background: #f0f9ff; 
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ main {
 section h2 {
   margin-top: 0;
   font-size: 1.5rem;
-  color: #0ea5e9; /* biru terang untuk judul */
+  color: #72b1ce; 
 }
 
 form {
@@ -46,7 +46,7 @@ label {
 
 input {
   padding: 0.5rem;
-  border: 1px solid #bae6fd; /* garis biru muda */
+  border: 1px solid #bae6fd; 
   border-radius: 6px;
   background-color: #fff;
 }
@@ -54,7 +54,7 @@ input {
 button {
   margin-top: 1rem;
   padding: 0.6rem;
-  background-color: #38bdf8; /* biru langit */
+  background-color: #87c7e2; 
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -65,11 +65,11 @@ button {
 
 button:hover,
 button:focus {
-  background-color: #0ea5e9; /* biru terang saat hover */
+  background-color: #a0d6f0; 
 }
 
 article {
-  border-bottom: 1px solid #bae6fd; /* garis pembatas biru muda */
+  border-bottom: 1px solid #bae6fd;
   padding: 1rem 0;
 }
 
@@ -92,7 +92,7 @@ article img {
   position: absolute;
   top: -40px;
   left: 0;
-  background: #0ea5e9; /* biru terang */
+  background: #0ea5e9;
   color: #fff;
   padding: 8px 12px;
   z-index: 100;
@@ -107,3 +107,92 @@ article img {
 ::view-transition-new(root) {
   animation-duration: 300ms;
 }
+
+/* Navbar Styles */
+.navbar {
+  background-color: #93d0eb;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.navbar a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.navbar a:active {
+  transform: translateY(0);
+}
+
+#logout-btn {
+  background-color: #0ea5e9;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+#logout-btn:hover {
+  background-color: #0284c7;
+  transform: translateY(-2px);
+}
+
+#logout-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: 0.5rem;
+  }
+  
+  .navbar a, #logout-btn {
+    width: 100%;
+    text-align: center;
+    margin: 0.25rem 0;
+    padding: 0.75rem;
+  }
+}
+
+/* Animation for Navbar Items */
+@keyframes navItemFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar a, #logout-btn {
+  animation: navItemFade 0.3s ease-out forwards;
+}
+
+.navbar a:nth-child(1) { animation-delay: 0.1s; }
+.navbar a:nth-child(2) { animation-delay: 0.2s; }
+.navbar a:nth-child(3) { animation-delay: 0.3s; }
+#logout-btn { animation-delay: 0.4s; }

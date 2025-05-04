@@ -22,11 +22,10 @@ import addStoryView from './views/AddStoryView.js';
 export default function router() {
   const main = document.getElementById('main-content');
   const hash = window.location.hash || '#/login';
-  const token = authModel.getToken(); // Pakai model, bukan localStorage langsung
+  const token = authModel.getToken();
 
   Navbar.remove();
 
-  // Proteksi route
   if (hash !== '#/login' && !token) {
     window.location.hash = '#/login';
     return;

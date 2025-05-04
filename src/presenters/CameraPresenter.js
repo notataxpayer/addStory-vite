@@ -1,8 +1,9 @@
 export default {
+  //Camera
     async startCamera(videoElement) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: 'environment' }, // Kamera belakang
+          video: { facingMode: 'environment' },
           audio: false
         });
         videoElement.srcObject = stream;

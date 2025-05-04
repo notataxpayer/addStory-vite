@@ -1,23 +1,3 @@
-// import authModel from '../models/authModel.js';
-
-// export default {
-//   async login(email, password) {
-//     try {
-//       const res = await fetch('https://story-api.dicoding.dev/v1/login', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ email, password })
-//       });
-//       const data = await res.json();
-//       authModel.setToken(data.loginResult.token);
-//       window.location.hash = '#/home';
-//     } catch (error) {
-//       alert('Login failed');
-//     }
-//   }
-// };
-
-
 import authModel from '../models/authModel.js';
 
 export default {

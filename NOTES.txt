@@ -19,7 +19,7 @@ Pastikan peta memiliki marker dan menampilkan popup saat diklik.
 Hal yang perlu dicatat adalah SERTAKAN API key dari map service yang digunakan dalam STUDENT.txt jika memang aplikasi Anda membutuhkannya. Bila tidak memiliki berkas tersebut, silakan buat baru dalam root project, ya.
 
 
-Kriteria Wajib 4: Memiliki Fitur Tambah Data Baru
+Kriteria Wajib 4 (DONE): Memiliki Fitur Tambah Data Baru
 Selain menampilkan data ke halaman, aplikasi WAJIB punya kemampuan menambahkan data baru ke API. Tentunya, ini berpotensi membutuhkan halaman baru untuk menampilkan formulir. Pastikan halaman tersebut berisi kolom-kolom input yang dibutuhkan untuk mendapatkan data dari user.
 
 Meskipun masing-masing API memiliki kebutuhan yang berbeda, ada kemiripan data. Berikut adalah beberapa ketentuan WAJIBNYA.
@@ -27,7 +27,7 @@ Meskipun masing-masing API memiliki kebutuhan yang berbeda, ada kemiripan data. 
 Mengambil data gambar dengan kamera. Pastikan stream yang dibuat telah nonaktif jika tidak diperlukan lagi.
 Gunakan peta digital dan event klik untuk mengambil data latitude dan longitude. Anda diperkenankan memanfaatkan library apa pun selain yang diajarkan di kelas.
 
-Kriteria Wajib 5: Menerapkan Aksesibilitas sesuai dengan Standar
+Kriteria Wajib 5: (Is it Done?) Menerapkan Aksesibilitas sesuai dengan Standar
 Ada beberapa aspek dalam meningkatkan aksesibilitas aplikasi. Perhatikan ketentuan-ketentuan WAJIBNYA.
 
 Menerapkan skip to content.

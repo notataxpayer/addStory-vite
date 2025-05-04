@@ -4,8 +4,8 @@ import authModel from '../models/authModel.js';
 export default {
   async postStory({ description, photo, lat, lon }) {
     try {
-      // Validasi input
 
+      // Validasi input di addstory
       if (typeof photo === 'string') {
         storyModel.validateBase64Image(photo);
         const blob = await fetch(photo).then(r => r.blob());
