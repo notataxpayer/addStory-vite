@@ -5,6 +5,15 @@ export default {
   async postStory({ description, photo, lat, lon }) {
     try {
       // Validasi input
+
+      if (typeof photo === 'string') {
+        storyModel.validateBase64Image(photo);
+        const blob = await fetch(photo).then(r => r.blob());
+        photo = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+      } else {
+        storyModel.validatePhoto(photo);
+      }
+
       storyModel.validatePhoto(photo);
       storyModel.validateCoords(lat, lon);
 
@@ -30,7 +39,7 @@ export default {
       return await response.json();
     } catch (error) {
       console.error('Post story error:', error);
-      throw error; // Dilempar ke view untuk ditampilkan ke user
+      throw error; 
     }
   }
 };

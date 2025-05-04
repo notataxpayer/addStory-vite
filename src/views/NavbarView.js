@@ -1,3 +1,5 @@
+import authModel from "../models/authModel";
+
 export default {
     render(parentElement) {
       const navbar = document.createElement('nav');

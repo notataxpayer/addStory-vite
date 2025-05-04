@@ -1,6 +1,9 @@
 import addStoryPresenter from '../presenters/AddStoryPresenter.js';
+import cameraPresenter from '../presenters/cameraPresenter.js';
 
 export default {
+  cameraStream: null, // Store camera stream instance
+  
   render(container) {
     container.innerHTML = `
       <section class="add-story">
@@ -9,8 +12,18 @@ export default {
           <label for="description">Description</label>
           <textarea id="description" required></textarea>
           
-          <label for="photo">Photo (Max 1MB)</label>
-          <input type="file" id="photo" accept="image/*" required>
+          <label>Photo Source</label>
+          <div class="photo-options">
+            <button type="button" id="open-camera">Use Camera</button>
+            <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+            <button type="button" id="upload-photo">Upload File</button>
+          </div>
+          
+          <video id="camera-preview" autoplay playsinline style="display: none; width: 100%; max-height: 300px; margin: 10px 0;"></video>
+          <button type="button" id="capture-btn" style="display: none; margin-bottom: 10px;">Capture Photo</button>
+          <img id="photo-preview" style="display: none; max-width: 100%; max-height: 300px; margin: 10px 0;">
+          
+          <input type="hidden" id="photo-data">
           
           <label for="lat">Latitude (Optional)</label>
           <input type="number" id="lat" step="any">
@@ -26,22 +39,115 @@ export default {
     `;
 
     this.initMap();
+    this.initCameraHandlers();
     this.setupForm();
   },
 
-  initMap() {
-    const map = L.map('map').setView([0, 0], 2);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+  initCameraHandlers() {
+    const video = document.getElementById('camera-preview');
+    const captureBtn = document.getElementById('capture-btn');
+    const openCameraBtn = document.getElementById('open-camera');
+    const uploadPhotoBtn = document.getElementById('upload-photo');
+    const fileInput = document.getElementById('photo-upload');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoDataInput = document.getElementById('photo-data');
 
-    let marker;
-    map.on('click', (e) => {
-      const { lat, lng } = e.latlng;
-      document.getElementById('lat').value = lat;
-      document.getElementById('lon').value = lng;
-      
-      if (marker) marker.remove();
-      marker = L.marker([lat, lng]).addTo(map);
+    // Open camera button handler
+    openCameraBtn.addEventListener('click', async () => {
+      try {
+        openCameraBtn.disabled = true;
+        openCameraBtn.textContent = 'Initializing Camera...';
+        
+        this.cameraStream = await cameraPresenter.startCamera(video);
+        
+        video.style.display = 'block';
+        captureBtn.style.display = 'block';
+        photoPreview.style.display = 'none';
+        openCameraBtn.textContent = 'Camera Ready';
+        
+      } catch (error) {
+        console.error('Camera error:', error);
+        openCameraBtn.disabled = false;
+        openCameraBtn.textContent = 'Use Camera';
+        alert(`Camera Error: ${error.message}`);
+      }
     });
+
+    // Capture button handler
+    captureBtn.addEventListener('click', () => {
+      const photoData = cameraPresenter.capturePhoto(video);
+      
+      // Display the captured photo
+      photoPreview.src = photoData;
+      photoPreview.style.display = 'block';
+      photoDataInput.value = photoData;
+      
+      // Hide camera and stop stream
+      video.style.display = 'none';
+      captureBtn.style.display = 'none';
+      this.cleanupCamera();
+      
+      // Reset camera button
+      document.getElementById('open-camera').textContent = 'Retake Photo';
+      document.getElementById('open-camera').disabled = false;
+    });
+
+    // Upload file button handler
+    uploadPhotoBtn.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (this.cameraStream) {
+        this.cleanupCamera();
+      }
+      
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          photoPreview.src = event.target.result;
+          photoPreview.style.display = 'block';
+          photoDataInput.value = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  },
+
+  cleanupCamera() {
+    if (this.cameraStream) {
+      cameraPresenter.stopCamera(this.cameraStream);
+      this.cameraStream = null;
+    }
+  },
+
+  initMap() {
+    // Add slight delay to ensure map container exists
+    setTimeout(() => {
+      const mapContainer = document.getElementById('map');
+      if (!mapContainer) {
+        console.error('Map container not found!');
+        return;
+      }
+
+      const map = L.map('map').setView([-6.1754, 106.8272], 13); // Default to Jakarta
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+      }).addTo(map);
+
+      let marker;
+      map.on('click', (e) => {
+        const { lat, lng } = e.latlng;
+        document.getElementById('lat').value = lat.toFixed(6);
+        document.getElementById('lon').value = lng.toFixed(6);
+        
+        if (marker) map.removeLayer(marker);
+        marker = L.marker([lat, lng]).addTo(map);
+      });
+
+      this.map = map;
+    }, 100);
   },
 
   setupForm() {
@@ -53,17 +159,34 @@ export default {
 
       try {
         const description = document.getElementById('description').value;
-        const photo = document.getElementById('photo').files[0];
+        const photoData = document.getElementById('photo-data').value;
         const lat = document.getElementById('lat').value || null;
         const lon = document.getElementById('lon').value || null;
 
-        await addStoryPresenter.postStory({ description, photo, lat, lon });
-        window.location.hash = '#/home'; // Redirect setelah sukses
+        let photoFile;
+        if (photoData) {
+          // Convert base64 to file object
+          const blob = await fetch(photoData).then(r => r.blob());
+          photoFile = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
+        } else {
+          throw new Error('Please add a photo');
+        }
+
+        await addStoryPresenter.postStory({ description, photo: photoFile, lat, lon });
+        window.location.hash = '#/home';
       } catch (error) {
         document.getElementById('error-message').textContent = error.message;
       } finally {
         submitBtn.disabled = false;
       }
     });
+  },
+
+  cleanup() {
+    this.cleanupCamera();
+    if (this.map) {
+      this.map.remove();
+      this.map = null;
+    }
   }
 };

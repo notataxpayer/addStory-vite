@@ -15,5 +15,11 @@ export default {
           throw new Error('Lat/Lon must be numbers');
         }
       }
-    }
+    },
+
+    validateBase64Image(data) {
+        if (!data.startsWith('data:image/')) {
+          throw new Error('Invalid image data');
+        }
+      }
   };

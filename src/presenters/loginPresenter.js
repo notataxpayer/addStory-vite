@@ -38,7 +38,6 @@ export default {
     } catch (error) {
       console.error('Login error:', error);
       alert(error.message || 'Login failed. Check console for details.');
-      // Bisa juga kirim error ke error tracking (Sentry, etc.)
     }
   }
 };
