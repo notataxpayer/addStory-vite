@@ -1,8 +1,8 @@
 import addStoryPresenter from '../presenters/AddStoryPresenter.js';
-import cameraPresenter from '../presenters/CameraPresenter.js';
+import cameraPresenter from '../models/CameraModel.js';
 
 export default {
-  cameraStream: null, // Store camera stream instance
+  cameraStream: null,
   
   render(container) {
     container.innerHTML = `
@@ -41,7 +41,19 @@ export default {
     this.initMap();
     this.initCameraHandlers();
     this.setupForm();
+
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash !== '#/addstory') {
+        this.cleanup();
+      }
+    });
+    
+    window.addEventListener('beforeunload', () => {
+      this.cleanup();
+    });
+    
   },
+  
 
   initCameraHandlers() {
     const video = document.getElementById('camera-preview');
@@ -130,7 +142,7 @@ export default {
         return;
       }
 
-      const map = L.map('map').setView([-6.1754, 106.8272], 13); // Set defaultnya ke JKT
+      const map = L.map('map').setView([-7.982270, 112.653809], 13); // Default malang 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap'
       }).addTo(map);
@@ -164,7 +176,6 @@ export default {
 
         let photoFile;
         if (photoData) {
-          // Convert base64 ke file obj
           const blob = await fetch(photoData).then(r => r.blob());
           photoFile = new File([blob], 'photo.jpg', { type: 'image/jpeg' });
         } else {

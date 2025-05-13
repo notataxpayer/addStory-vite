@@ -1,23 +1,10 @@
-// import loginView from './views/loginView.js';
-// import homeView from './views/HomeView.js';
-
-// export default function router() {
-//   const main = document.getElementById('main-content');
-//   const hash = window.location.hash || '#/login';
-
-//   if (hash === '#/login') {
-//     loginView.render(main);
-//   } else if (hash === '#/home') {
-//     homeView.render(main);
-//   }
-// }
-
 import authModel from './models/authModel.js';
 import loginView from './views/loginView.js';
 import homeView from './views/HomeView.js';
 import Navbar from './views/NavbarView.js';
 import AboutView from './views/AboutView.js';
 import addStoryView from './views/AddStoryView.js';
+import registerView from './views/RegisterView.js';
 
 export default function router() {
   const main = document.getElementById('main-content');
@@ -26,10 +13,11 @@ export default function router() {
 
   Navbar.remove();
 
-  if (hash !== '#/login' && !token) {
+  if (!token && hash !== '#/login' && hash !== '#/register') {
     window.location.hash = '#/login';
     return;
   }
+
 
   if (token) Navbar.render(document.body);
 
@@ -45,6 +33,9 @@ export default function router() {
       break;
     case '#/addstory':
       addStoryView.render(main);
+      break;
+    case '#/register':
+      registerView.render(main);
       break;
   }
 }

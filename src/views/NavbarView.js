@@ -5,6 +5,7 @@ export default {
       const navbar = document.createElement('nav');
       navbar.innerHTML = `
         <div class="navbar">
+          <a href="#main-content" class="skip-link">Skip to content</a>
           <a href="#/home">Home</a>
           <a href="#/about">About</a>
           <a href="#/addstory">Add Story</a>
