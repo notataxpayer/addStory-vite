@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>STORY APP</title>
-  <link rel="stylesheet" href="/src/style.css">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/icon.jpg">
+  <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-  <!-- <a href="#main-content" class="skip-link">Skip to Content</a> -->
-
   <header>
     <h1>STORY APP</h1>
   </header>
@@ -17,5 +17,18 @@
   <main id="main-content" tabindex="-1"></main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="/src/main.js"></script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function (registration) {
+          console.log('ServiceWorker registered: ', registration);
+        })
+        .catch(function (error) {
+          console.log('ServiceWorker registration failed: ', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>

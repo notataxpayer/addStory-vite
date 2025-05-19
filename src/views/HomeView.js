@@ -5,13 +5,35 @@ export default {
     container.innerHTML = `
       <section>
         <h2>Home</h2>
+        <button id="unsubscribe-btn">Unsubscribe Notification</button>
         <div id="map" style="height: 400px;"></div>
         <div id="stories"></div>
       </section>
     `;
     homePresenter.loadStories();
+    this._initNotificationButton();
   },
+  async _initNotificationButton() {
+    const btn = document.getElementById('unsubscribe-btn');
 
+    async function updateBtn() {
+      const isSub = await homePresenter.checkSubscription();
+      btn.textContent = isSub ? 'Unsubscribe Notification' : 'Subscribe Notification';
+    }
+
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+
+      await homePresenter.toggleNotification();
+
+      await updateBtn();
+      btn.disabled = false;
+    });
+
+    await updateBtn();
+  },
+  
   renderStories(stories) {
     const storiesDiv = document.getElementById('stories');
     storiesDiv.innerHTML = stories.map(s => `
@@ -22,9 +44,17 @@ export default {
         <p>dibuat pada : ${s.createdAt}</p>
       </article>
     `).join('');
+    
+      // Delete
+      storiesDiv.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const id = Number(e.currentTarget.closest('article').dataset.id);
+        await homePresenter.deleteStory(id);
+      });
+    });
 
     // 🗺️ Tambahkan Peta
-    const map = L.map('map').setView([stories[0]?.lat || 0, stories[0]?.lon || 0], 4); // zoom level 4
+    const map = L.map('map').setView([stories[0]?.lat || 0, stories[0]?.lon || 0], 4);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);

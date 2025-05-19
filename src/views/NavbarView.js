@@ -9,12 +9,12 @@ export default {
           <a href="#/home">Home</a>
           <a href="#/about">About</a>
           <a href="#/addstory">Add Story</a>
+          <a href="#/offlinestories">Local Stories</a>
           <button id="logout-btn">Logout</button>
         </div>
       `;
       parentElement.prepend(navbar);
   
-      // Logout: Hapus user token & redirect ke login
       document.getElementById('logout-btn').addEventListener('click', () => {
         localStorage.removeItem('token');
         authModel.removeToken();

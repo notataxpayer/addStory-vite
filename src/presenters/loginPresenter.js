@@ -1,4 +1,5 @@
 import authModel from '../models/authModel.js';
+import notificationPresenter from './notificationPresenter.js';
 
 export default {
   async login(email, password) {

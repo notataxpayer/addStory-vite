@@ -1,3 +1,30 @@
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .then(reg => console.log('ServiceWorker registered:', reg))
+      .catch(err => console.error('SW register failed:', err));
+  });
+}
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const installBtn = document.createElement('button');
+  installBtn.textContent = 'Install App';
+  installBtn.id = 'install-btn';
+  document.body.appendChild(installBtn);
+  installBtn.addEventListener('click', async () => {
+    installBtn.disabled = true;
+    deferredPrompt.prompt();
+    const choice = await deferredPrompt.userChoice;
+    console.log('User choice:', choice.outcome);
+    installBtn.remove();
+    deferredPrompt = null;
+  });
+});
+
+
 const loginForm = document.getElementById('login-form');
 const loginSection = document.getElementById('login-section');
 const contentSection = document.getElementById('content-section');

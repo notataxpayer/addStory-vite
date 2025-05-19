@@ -5,6 +5,7 @@ import Navbar from './views/NavbarView.js';
 import AboutView from './views/AboutView.js';
 import addStoryView from './views/AddStoryView.js';
 import registerView from './views/RegisterView.js';
+import offlineStoriesView from './views/OfflineStoriesView.js';
 
 export default function router() {
   const main = document.getElementById('main-content');
@@ -36,6 +37,9 @@ export default function router() {
       break;
     case '#/register':
       registerView.render(main);
+      break;
+    case '#/offlinestories':
+      offlineStoriesView.render(main);
       break;
   }
 }

@@ -6,9 +6,12 @@ export default {
       <section>
         <h2>Register</h2>
         <form id="register-form">
-          <input type="text" id="name" placeholder="Name" required />
-          <input type="email" id="email" placeholder="Email" required />
-          <input type="password" id="password" placeholder="Password" required minlength="8" />
+          <label for="email">Name</label>
+          <input type="text" id="name" placeholder="myname123" required />
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="example@gmail.com" required />
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="your password" required minlength="8" />
           <button type="submit" id="register-btn">Register</button>
         </form>
         <button id="back-btn" class="secondary-btn">Back to Login</button>
@@ -35,15 +38,6 @@ export default {
           registerBtn.innerHTML = originalText;
           registerBtn.disabled = false;
         });
-
-    // document.getElementById('register-form').addEventListener('submit', async (e) => {
-    //   e.preventDefault();
-    //   const name = document.getElementById('name').value.trim();
-    //   const email = document.getElementById('email').value.trim();
-    //   const password = document.getElementById('password').value;
-
-    //   registerPresenter.registerUser({ name, email, password });
-    // });
   },
 
   
