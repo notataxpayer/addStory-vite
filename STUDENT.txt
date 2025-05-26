@@ -1,3 +1,6 @@
 API Digunakan:
 - Story API: https://story-api.dicoding.dev/v1
 - Peta: OpenStreetMap (Tanpa API Key)
+
+Jalankan Program : npm run build => npx serve dist
+Link web yang di deploy : https://add-story-vite.vercel.app/

@@ -1,21 +1,5 @@
-// import authModel from './authModel.js';
-
-// export default {
-//   async fetchStories() {
-//     const res = await fetch('https://story-api.dicoding.dev/v1/stories', {
-//       headers: {
-//         Authorization: `Bearer ${authModel.getToken()}`
-//       }
-//     });
-//     if (!res.ok) throw new Error('Failed to fetch stories');
-//     const data = await res.json();
-//     return data.listStory;
-//   }
-// };
-
-
 import authModel from './authModel.js';
-import { saveStories, getAllStories, deleteStory } from '../../db.js';
+import { saveStories, getAllStories, deleteStory, getDB } from '../../db.js';
 
 export default {
   async fetchStories() {
@@ -24,8 +8,7 @@ export default {
     });
     if (!res.ok) throw new Error('Fetch gagal');
     const { listStory } = await res.json();
-    // simpan ke IndexedDB untuk offline
-    await saveStories(listStory);
+    // await saveStories(listStory);
     return listStory;
   },
 
@@ -33,8 +16,21 @@ export default {
   async getCachedStories() {
     return await getAllStories();
   },
-
+  async saveStoriesToIDB(stories) {
+    await saveStories(stories);
+  },
   async removeStory(id) {
     return await deleteStory(id);
+  },
+
+    async saveStories(stories) {
+    await saveStories(stories);  // fungsi helper dari db.js, simpan array
+  },
+
+  async saveStory(story) {
+    const db = await getDB();
+    const tx = db.transaction('stories', 'readwrite');
+    await tx.store.put(story);
+    await tx.done;
   }
 };

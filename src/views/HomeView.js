@@ -1,23 +1,33 @@
 import homePresenter from '../presenters/HomePresenter.js';
+import notificationPresenter from '../presenters/notificationPresenter.js';
 
 export default {
   render(container) {
     container.innerHTML = `
       <section>
         <h2>Home</h2>
-        <button id="unsubscribe-btn">Unsubscribe Notification</button>
+        <button id="unsubscribe-btn">Subscribe</button>
+        <button id="add-story-btn">Save All Story</button>
         <div id="map" style="height: 400px;"></div>
         <div id="stories"></div>
       </section>
     `;
     homePresenter.loadStories();
     this._initNotificationButton();
+    this._initAddStoryButton();
   },
+  _initAddStoryButton() {
+    const btn = document.getElementById('add-story-btn');
+    btn.addEventListener('click', () => {
+      homePresenter.saveAllStory();
+    });
+  },
+
   async _initNotificationButton() {
     const btn = document.getElementById('unsubscribe-btn');
-
     async function updateBtn() {
       const isSub = await homePresenter.checkSubscription();
+      console.log(isSub)
       btn.textContent = isSub ? 'Unsubscribe Notification' : 'Subscribe Notification';
     }
 
@@ -30,7 +40,6 @@ export default {
       await updateBtn();
       btn.disabled = false;
     });
-
     await updateBtn();
   },
   
@@ -42,9 +51,16 @@ export default {
         <img src="${s.photoUrl}" alt="${s.description}">
         <p>${s.description}</p>
         <p>dibuat pada : ${s.createdAt}</p>
+        <button class="save-story-btn">Simpan Story</button>
       </article>
     `).join('');
-    
+
+    // Save
+     storiesDiv.querySelectorAll('.save-story-btn').forEach((btn, idx) => {
+      btn.addEventListener('click', () => {
+        homePresenter.saveStory(stories[idx]);
+      });
+    });
       // Delete
       storiesDiv.querySelectorAll('.delete-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {

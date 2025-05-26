@@ -5,6 +5,9 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   plugins: [
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'public',
+      filename: 'sw.js',
       registerType: 'autoUpdate',
       includeAssets: [
         'favicon.svg',
@@ -40,7 +43,7 @@ export default defineConfig({
               cacheName: 'leaflet-cache',
               expiration: {
                 maxEntries: 5,
-                maxAgeSeconds: 60 * 60 * 24 * 30 // 30 hari
+                maxAgeSeconds: 60 * 60 * 24 * 30 
               }
             }
           }

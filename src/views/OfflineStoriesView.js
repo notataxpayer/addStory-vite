@@ -1,4 +1,3 @@
-// src/views/OfflineStoriesView.js
 import offlinePresenter from '../presenters/OfflinePresenter.js';
 
 export default {

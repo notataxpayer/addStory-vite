@@ -70,12 +70,33 @@ self.addEventListener('fetch', event => {
 });
 
 
-self.addEventListener('push', event => {
-  const data = event.data?.json() || {};
-  const title = data.title || 'Notification';
-  const options = data.options || {
-    body: 'You have a new notification',
-    icon: '/icon-192x192.png'
+self.addEventListener('push', function(event) {
+  console.log('[Service Worker] Push Received.');
+  let data = {};
+  if (event.data) {
+    data = event.data.json();
+    console.log('[Service Worker] Push data:', data);
+  }
+
+  const title = data.title || 'Default title';
+  const options = {
+    body: data.body || 'Default body',
+    icon: '/icon-192x192.png',
+    badge: '/icon-192x192.png',
   };
-  event.waitUntil(self.registration.showNotification(title, options));
+
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  );
+});
+
+
+
+
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow('/#home') 
+  );
 });
